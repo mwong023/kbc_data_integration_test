@@ -1,0 +1,27 @@
+paths:
+  test_parametrics: data/in/tables/data_test_parametrics.csv
+
+snowflake:
+  account: ${SNOWFLAKE_ACCOUNT}
+  warehouse: ${SNOWFLAKE_WAREHOUSE}
+  username: ${SNOWFLAKE_USER}
+  password: ${SNOWFLAKE_PASSWORD}
+
+validation:
+  required_columns:
+    - TABLE_NAME
+    - TEST_NAME
+    - PARAMETER_1
+    - PARAMETER_2
+    - PARAMETER_3
+    - PARAMETER_4
+    - ENVIRONMENT
+    - VALUE
+  retry:
+    max_attempts: 3
+    delay_seconds: 5
+
+logging:
+  level: INFO
+  format: "{time:YYYY-MM-DD HH:mm:ss} | {level} | {message}"
+  file: logs/validation.log 
