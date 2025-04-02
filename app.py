@@ -7,6 +7,8 @@ import sys
 import io
 import os
 import pandas as pd
+from kbc_automated_tests.data_validator import DataValidator
+from kbc_automated_tests.config.configuration import Configuration
 
 # Configure Streamlit page
 st.set_page_config(
@@ -20,7 +22,6 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 # Import from the package
 from kbc_automated_tests.api.keboola_client import KeboolaClient
-from kbc_automated_tests.data_validator import DataValidator
 
 # Configure logging to capture in Streamlit
 def streamlit_sink(message):
@@ -30,9 +31,46 @@ def streamlit_sink(message):
 logger.remove()  # Remove default handler
 logger.add(streamlit_sink, format="{time:YYYY-MM-DD HH:mm:ss} | {level} | {message}")
 
+def list_directory_contents(path: str = ".", level: int = 0):
+    """Recursively list directory contents with indentation"""
+    try:
+        # List all items in the directory
+        items = os.listdir(path)
+        
+        # Sort items to show directories first, then files
+        dirs = [item for item in items if os.path.isdir(os.path.join(path, item))]
+        files = [item for item in items if os.path.isfile(os.path.join(path, item))]
+        
+        # Print directories
+        for item in sorted(dirs):
+            if item.startswith('.'):  # Skip hidden directories
+                continue
+            # Use markdown for better visibility
+            st.markdown("  " * level + f"📁 **{item}/**")
+            # Recursively list contents of subdirectories
+            list_directory_contents(os.path.join(path, item), level + 1)
+            
+        # Print files
+        for item in sorted(files):
+            if item.startswith('.'):  # Skip hidden files
+                continue
+            # Use markdown for better visibility
+            st.markdown("  " * level + f"📄 {item}")
+            
+    except Exception as e:
+        st.error(f"Error listing directory {path}: {str(e)}")
+
 def main():
     """Main Streamlit app function"""
     st.title("Keboola Data Validation Tests")
+    
+    # Add directory listing at the start
+    st.subheader("Project Structure")
+    st.write("Current working directory:", os.getcwd())
+    st.write("Directory contents:")
+    # Add a container for better organization
+    with st.container():
+        list_directory_contents()
     
     # Initialize Keboola client
     try:
