@@ -142,12 +142,12 @@ Useful to make sure that the transformation is matching the sum of a column for 
 Configuration:
 ```
 STORAGE_TABLE_ID,STORAGE_BUCKET_ID,TEST_NAME,SOURCE_BUCKET,SOURCE_TABLE,PARAMETER_1,PARAMETER_2,PARAMETER_3,PARAMETER_4
-FCT_BILLING_LINES,out.c-base_zone_creation,input_check_sum,in.c-keboola-ex-db-mssql-1096073930,BillingLedgerDetail,n/a,n/a,TotalAmount,TOTAL_AMOUNT_BILLED
+FCT_BILLING_LINES,out.c-base_zone_creation,input_check_sum,in.c-keboola-ex-db-mssql-1096073930,BillingLedgerDetail,TotalAmount,TOTAL_AMOUNT_BILLED,n/a,n/a
 ```
 
-PARAMETER_3 is the column name for the input.  (TotalAmount is for BillingLedgerDetail)
+PARAMETER_1 is the column name for the input.  (TotalAmount is for BillingLedgerDetail)
 
-PARAMETER_4 is the column name for the output.  (TOTAL_AMOUNT_BILLED belongs to FCT_BILLING_LINES)
+PARAMETER_2 is the column name for the output.  (TOTAL_AMOUNT_BILLED belongs to FCT_BILLING_LINES)
 
 
 ## Configure / Customize Your Own Tests

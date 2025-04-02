@@ -39,6 +39,8 @@ class DataValidationQueries(QueryManager):
             SELECT 
                 %(table_name_string)s as TABLE_NAME,
                 'check_row_count' as TEST_NAME,
+                'n/a' as SOURCE_BUCKET,
+                'n/a' as SOURCE_TABLE,
                 'n/a' as PARAMETER_1,
                 'n/a' as PARAMETER_2,
                 'n/a' as PARAMETER_3,
@@ -52,6 +54,8 @@ class DataValidationQueries(QueryManager):
             SELECT 
                 %(table_name_string)s as TABLE_NAME,
                 'check_row_count' as TEST_NAME,
+                'n/a' as SOURCE_BUCKET,
+                'n/a' as SOURCE_TABLE,
                 'n/a' as PARAMETER_1,
                 'n/a' as PARAMETER_2,
                 'n/a' as PARAMETER_3,
@@ -70,6 +74,8 @@ class DataValidationQueries(QueryManager):
             SELECT 
                 %(table_name_string)s as TABLE_NAME,
                 'check_sum' as TEST_NAME,
+                'n/a' as SOURCE_BUCKET,
+                'n/a' as SOURCE_TABLE,
                 %(parameter_1_string)s as PARAMETER_1,
                 'n/a' as PARAMETER_2,
                 'n/a' as PARAMETER_3,
@@ -83,6 +89,8 @@ class DataValidationQueries(QueryManager):
             SELECT 
                 %(table_name_string)s as TABLE_NAME,
                 'check_sum' as TEST_NAME,
+                'n/a' as SOURCE_BUCKET,
+                'n/a' as SOURCE_TABLE,
                 %(parameter_1_string)s as PARAMETER_1,
                 'n/a' as PARAMETER_2,
                 'n/a' as PARAMETER_3,
@@ -101,6 +109,8 @@ class DataValidationQueries(QueryManager):
             SELECT 
                 %(table_name_string)s as TABLE_NAME,
                 'check_uniqueness' as TEST_NAME,
+                'n/a' as SOURCE_BUCKET,
+                'n/a' as SOURCE_TABLE,
                 %(parameter_1_string)s as PARAMETER_1,
                 'n/a' as PARAMETER_2,
                 'n/a' as PARAMETER_3,
@@ -114,6 +124,8 @@ class DataValidationQueries(QueryManager):
             SELECT 
                 %(table_name_string)s as TABLE_NAME,
                 'check_uniqueness' as TEST_NAME,
+                'n/a' as SOURCE_BUCKET,
+                'n/a' as SOURCE_TABLE,
                 %(parameter_1_string)s as PARAMETER_1,
                 'n/a' as PARAMETER_2,
                 'n/a' as PARAMETER_3,
@@ -132,8 +144,10 @@ class DataValidationQueries(QueryManager):
             SELECT 
                 %(table_name_string)s as TABLE_NAME,
                 'input_check_row_count' as TEST_NAME,
-                %(source_bucket_string)s as PARAMETER_1,
-                %(source_table_string)s as PARAMETER_2,
+                %(source_bucket_string)s as SOURCE_BUCKET,
+                %(source_table_string)s as SOURCE_TABLE,
+                'n/a' as PARAMETER_1,
+                'n/a' as PARAMETER_2,
                 'n/a' as PARAMETER_3,
                 'n/a' as PARAMETER_4,
                 'DEV' as ENVIRONMENT,
@@ -145,8 +159,10 @@ class DataValidationQueries(QueryManager):
             SELECT 
                 %(table_name_string)s as TABLE_NAME,
                 'input_check_row_count' as TEST_NAME,
-                %(source_bucket_string)s as PARAMETER_1,
-                %(source_table_string)s as PARAMETER_2,
+                %(source_bucket_string)s as SOURCE_BUCKET,
+                %(source_table_string)s as SOURCE_TABLE,
+                'n/a' as PARAMETER_1,
+                'n/a' as PARAMETER_2,
                 'n/a' as PARAMETER_3,
                 'n/a' as PARAMETER_4,
                 'PROD' as ENVIRONMENT,
@@ -162,12 +178,14 @@ class DataValidationQueries(QueryManager):
             SELECT 
                 %(table_name_string)s as TABLE_NAME,
                 'input_check_sum' as TEST_NAME,
-                %(source_bucket_string)s as PARAMETER_1,
-                %(source_table_string)s as PARAMETER_2,
-                %(parameter_3_string)s as PARAMETER_3,
-                %(parameter_4_string)s as PARAMETER_4,
+                'n/a' as SOURCE_BUCKET,
+                'n/a' as SOURCE_TABLE,
+                %(parameter_1_string)s as PARAMETER_1,
+                %(parameter_2_string)s as PARAMETER_2,
+                'n/a' as PARAMETER_3,
+                'n/a' as PARAMETER_4,
                 'DEV' as ENVIRONMENT,
-                SUM(%(parameter_4_object)s) as VALUE
+                SUM(%(parameter_2_object)s) as VALUE
             FROM %(dev_table)s
 
             UNION ALL
@@ -175,12 +193,14 @@ class DataValidationQueries(QueryManager):
             SELECT 
                 %(table_name_string)s as TABLE_NAME,
                 'input_check_sum' as TEST_NAME,
-                %(source_bucket_string)s as PARAMETER_1,
-                %(source_table_string)s as PARAMETER_2,
-                %(parameter_3_string)s as PARAMETER_3,
-                %(parameter_4_string)s as PARAMETER_4,
+                'n/a' as SOURCE_BUCKET,
+                'n/a' as SOURCE_TABLE,
+                %(parameter_1_string)s as PARAMETER_1,
+                %(parameter_2_string)s as PARAMETER_2,
+                'n/a' as PARAMETER_3,
+                'n/a' as PARAMETER_4,
                 'PROD' as ENVIRONMENT,
-                SUM(%(parameter_3_object)s) as VALUE
+                SUM(%(parameter_1_object)s) as VALUE
             FROM %(source_bucket_object)s.%(source_table_object)s
             """
         )

@@ -11,6 +11,8 @@ validation:
   required_columns:
     - TABLE_NAME
     - TEST_NAME
+    - SOURCE_BUCKET
+    - SOURCE_TABLE
     - PARAMETER_1
     - PARAMETER_2
     - PARAMETER_3
