@@ -37,7 +37,6 @@ ENV/
 logs/
 *.log
 data/in/tables/*.csv
-!data/in/tables/data_test_parametrics.csv
 .streamlit/secrets.toml
 
 # Test coverage
