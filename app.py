@@ -16,9 +16,9 @@ st.set_page_config(
 )
 
 # Add the project root to Python path
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-# Import from the project root
+# Import from the package
 from kbc_automated_tests.api.keboola_client import KeboolaClient
 from kbc_automated_tests.data_validator import DataValidator
 
