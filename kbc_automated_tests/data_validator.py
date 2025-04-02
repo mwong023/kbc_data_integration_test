@@ -8,6 +8,7 @@ This module handles the execution of data validation tests by:
 """
 from typing import List, Dict, Optional
 import pandas as pd
+import os
 from loguru import logger
 
 from .configuration.config_manager import ConfigurationManager
@@ -36,6 +37,35 @@ class DataValidator:
         self.query_executor = QueryExecutor(self.config)
         self.config_manager = ConfigurationManager(self.config)
         self.bucket_manager = BucketManager()
+        
+        # Log initialization
+        logger.info(f"Initialized DataValidator with branch_id: {branch_id}")
+        
+    def _validate_environment(self) -> bool:
+        """Validate the environment setup
+        
+        Returns:
+            bool: True if environment is valid, False otherwise
+        """
+        # Check if data directory exists
+        data_dir = os.path.join(os.getcwd(), "data")
+        if not os.path.exists(data_dir):
+            logger.error(f"Data directory not found at: {data_dir}")
+            return False
+            
+        # Check if tables directory exists
+        tables_dir = os.path.join(data_dir, "in", "tables")
+        if not os.path.exists(tables_dir):
+            logger.error(f"Tables directory not found at: {tables_dir}")
+            return False
+            
+        # Check if test parametrics file exists
+        test_parametrics_path = os.path.join(tables_dir, "data_test_parametrics.csv")
+        if not os.path.exists(test_parametrics_path):
+            logger.error(f"Test parametrics file not found at: {test_parametrics_path}")
+            return False
+            
+        return True
         
     def _parse_prod_bucket(self, dev_bucket: str) -> str:
         """Parse production bucket name from development bucket
@@ -182,9 +212,13 @@ class DataValidator:
             DataFrame containing all test results with standardized columns
             
         Raises:
-            Exception: If connection to Snowflake fails
+            Exception: If connection to Snowflake fails or environment is invalid
         """
         try:
+            # Validate environment first
+            if not self._validate_environment():
+                raise EnvironmentError("Environment validation failed. Please check the logs for details.")
+                
             # Connect to Snowflake
             self.query_executor.connect()
             
