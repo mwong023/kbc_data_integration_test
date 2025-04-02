@@ -19,8 +19,8 @@ SNOWFLAKE_PASSWORD = st.secrets["SNOWFLAKE_PASSWORD"]
 SNOWFLAKE_WAREHOUSE = st.secrets["SNOWFLAKE_WAREHOUSE"]
 
 # Keboola configuration
-KEBOOLA_API_TOKEN = os.getenv("KEBOOLA_API_TOKEN")
-KEBOOLA_STORAGE_API_URL = os.getenv("KEBOOLA_STORAGE_API_URL", "https://connection.keboola.com")
+KBC_TOKEN = os.getenv("KBC_TOKEN")
+KBC_URL = os.getenv("KBC_URL", "https://connection.keboola.com")
 
 # Test configuration
 TEST_PARAMETRICS_FILE = DATA_DIR / "in" / "tables" / "data_test_parametrics.csv"

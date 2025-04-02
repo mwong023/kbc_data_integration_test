@@ -5,15 +5,15 @@ import os
 import requests
 from typing import List, Dict, Optional
 from loguru import logger
-from kbc_automated_tests.config.config import KEBOOLA_API_TOKEN, KEBOOLA_STORAGE_API_URL
+from kbc_automated_tests.config.config import KBC_TOKEN, KBC_URL
 
 class KeboolaClient:
     """Client for interacting with Keboola API"""
     
     def __init__(self):
         """Initialize the Keboola client"""
-        self.api_token = KEBOOLA_API_TOKEN
-        self.base_url = KEBOOLA_STORAGE_API_URL
+        self.api_token = KBC_TOKEN
+        self.base_url = KBC_URL
         self.headers = {
             "X-StorageApi-Token": self.api_token,
             "Content-Type": "application/json"
