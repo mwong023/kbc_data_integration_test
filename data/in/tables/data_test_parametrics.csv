@@ -1,5 +1,0 @@
-STORAGE_TABLE_ID,STORAGE_BUCKET_ID,TEST_NAME,SOURCE_BUCKET,SOURCE_TABLE,PARAMETER_1,PARAMETER_2,PARAMETER_3,PARAMETER_4
-FCT_MONTH_END_CLOSE,out.c-base_zone_creation,check_row_count,n/a,n/a,n/a,n/a,n/a,n/a
-FCT_MONTH_END_CLOSE,out.c-base_zone_creation,check_sum,n/a,n/a,AMOUNT,n/a,n/a,n/a
-FCT_MONTH_END_CLOSE,out.c-base_zone_creation,check_uniqueness,n/a,n/a,MONTH_END_CLOSE_ID,n/a,n/a,n/a
-FCT_BILLING_LINES,out.c-base_zone_creation,input_check_sum,in.c-keboola-ex-db-mssql-1096073930,BillingLedgerDetail,TotalAmount,TOTAL_AMOUNT_BILLED,n/a,n/a
