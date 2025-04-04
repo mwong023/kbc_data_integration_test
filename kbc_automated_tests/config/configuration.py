@@ -26,6 +26,13 @@ class Configuration:
         self.config = self._load_config(config_path)
         self._validate_config()
         
+        # Convert paths to absolute paths
+        if "paths" in self.config:
+            data_root = os.environ.get("DATA_ROOT", "/data")  # Default to /data if not set
+            for key, path in self.config["paths"].items():
+                if not os.path.isabs(path):  # If path is not absolute
+                    self.config["paths"][key] = os.path.join(data_root, path.lstrip("data/"))
+        
     def _load_config(self, config_path: Path) -> Dict[str, Any]:
         """Load configuration from YAML file"""
         if not config_path.exists():
