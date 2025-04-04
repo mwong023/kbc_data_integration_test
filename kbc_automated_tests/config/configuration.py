@@ -23,15 +23,53 @@ class Configuration:
         if config_path is None:
             config_path = Path(__file__).parent / "config.yaml"
             
+        logger.info(f"Loading configuration from: {config_path}")
         self.config = self._load_config(config_path)
-        self._validate_config()
         
         # Convert paths to absolute paths
         if "paths" in self.config:
-            data_root = os.environ.get("DATA_ROOT", "/data")  # Default to /data if not set
+            data_root = os.environ.get("DATA_ROOT")
+            logger.info(f"DATA_ROOT environment variable {'is set to: ' + data_root if data_root else 'is not set, using production paths'}")
+            
             for key, path in self.config["paths"].items():
-                if not os.path.isabs(path):  # If path is not absolute
-                    self.config["paths"][key] = os.path.join(data_root, path.lstrip("data/"))
+                logger.info(f"Processing path for {key}:")
+                logger.info(f"  Original path: {path}")
+                
+                if data_root:
+                    # If DATA_ROOT is set, use it for testing/development
+                    stripped_path = path.lstrip("data/")
+                    logger.info(f"  Using DATA_ROOT mode:")
+                    logger.info(f"    - Stripped 'data/' prefix: {stripped_path}")
+                    self.config["paths"][key] = os.path.join(data_root, stripped_path)
+                else:
+                    # In production, ensure absolute path starting with /data
+                    logger.info("  Using production mode:")
+                    if path.startswith('data/'):
+                        # Strip 'data/' and ensure path starts with /data/in
+                        path_parts = path.split('/')
+                        logger.info(f"    - Path parts after split: {path_parts}")
+                        self.config["paths"][key] = os.path.join('/data/in', *path_parts[2:])
+                        logger.info(f"    - Converted to absolute path with /data/in prefix")
+                    elif not path.startswith('/data/in/'):
+                        # If path doesn't start with /data/in/, add it
+                        self.config["paths"][key] = os.path.join('/data/in', path)
+                        logger.info(f"    - Added /data/in prefix to path")
+                        
+                logger.info(f"  Final resolved path: {self.config['paths'][key]}")
+                
+                # Check if path exists and log permissions
+                final_path = Path(self.config["paths"][key])
+                logger.info(f"  Path validation:")
+                logger.info(f"    - Path exists: {final_path.exists()}")
+                if final_path.exists():
+                    logger.info(f"    - Is file: {final_path.is_file()}")
+                    logger.info(f"    - Is readable: {os.access(final_path, os.R_OK)}")
+                else:
+                    logger.info(f"    - Parent directory exists: {final_path.parent.exists()}")
+                    if final_path.parent.exists():
+                        logger.info(f"    - Parent directory is writable: {os.access(final_path.parent, os.W_OK)}")
+                
+        self._validate_config()
         
     def _load_config(self, config_path: Path) -> Dict[str, Any]:
         """Load configuration from YAML file"""
