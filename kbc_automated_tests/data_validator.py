@@ -47,8 +47,17 @@ class DataValidator:
         Returns:
             bool: True if environment is valid, False otherwise
         """
-        # Check if data directory exists
-        data_dir = os.path.join(os.getcwd(), "data")
+        # Get data root from environment or use /data for production
+        data_root = os.environ.get("DATA_ROOT")
+        if data_root:
+            # Development/testing mode
+            data_dir = os.path.join(data_root)
+            logger.info(f"Using development data directory: {data_dir}")
+        else:
+            # Production mode
+            data_dir = "/data"
+            logger.info(f"Using production data directory: {data_dir}")
+            
         if not os.path.exists(data_dir):
             logger.error(f"Data directory not found at: {data_dir}")
             return False
@@ -65,6 +74,10 @@ class DataValidator:
             logger.error(f"Test parametrics file not found at: {test_parametrics_path}")
             return False
             
+        logger.info(f"Environment validation successful:")
+        logger.info(f"  - Data directory: {data_dir}")
+        logger.info(f"  - Tables directory: {tables_dir}")
+        logger.info(f"  - Test parametrics file: {test_parametrics_path}")
         return True
         
     def _parse_prod_bucket(self, dev_bucket: str) -> str:
